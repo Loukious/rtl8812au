@@ -12,7 +12,10 @@ EXTRA_CFLAGS += -Wno-missing-prototypes
 EXTRA_CFLAGS += -Wno-error=cast-function-type
 #EXTRA_CFLAGS += -Wno-parentheses-equality
 #EXTRA_CFLAGS += -Wno-error=incompatible-pointer-types
+# 'clang' does not understand '-Wno-stringop-overread', see https://github.com/aircrack-ng/rtl8812au/issues/1205. So only add this if 'gcc' is the compiler.
+ifeq ($(CC), gcc)
 EXTRA_CFLAGS += -Wno-stringop-overread
+endif
 #EXTRA_CFLAGS += -Wno-pointer-bool-conversion
 EXTRA_CFLAGS += -Wno-unknown-pragmas
 #EXTRA_CFLAGS += -Wno-unused
@@ -1621,10 +1624,16 @@ KSRC ?=
 endif
 
 ifeq ($(ARCH), i386)
+# 'clang' does not understand '-mhard-float', see https://github.com/aircrack-ng/rtl8812au/issues/1205. So only add this if 'gcc' is the compiler.
+ifeq ($(CC), gcc)
 EXTRA_CFLAGS += -mhard-float
+endif
 EXTRA_CFLAGS += -DMARK_KERNEL_PFU
 else ifeq ($(ARCH), x86_64)
+# 'clang' does not understand '-mhard-float', see https://github.com/aircrack-ng/rtl8812au/issues/1205. So only add this if 'gcc' is the compiler.
+ifeq ($(CC), gcc)
 EXTRA_CFLAGS += -mhard-float
+endif
 EXTRA_CFLAGS += -DMARK_KERNEL_PFU
 endif
 
